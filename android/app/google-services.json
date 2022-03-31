@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "599759960850",
+    "project_id": "incridemo",
+    "storage_bucket": "incridemo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599759960850:android:0146b90d4627f00a15d1cb",
+        "android_client_info": {
+          "package_name": "com.example.login_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599759960850-hr0ib9rr6cnnsni62vafb3j7rohdubbe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiJ0bj0WlKg5Ql2uTVm-CoeD_-bcJJYtk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599759960850-hr0ib9rr6cnnsni62vafb3j7rohdubbe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
