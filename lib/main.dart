@@ -4,11 +4,11 @@ import 'package:login_2/screens/test.dart';
 import 'package:firebase_core/firebase_core.dart';
 void main() async{
   //1
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
-
 
 
 class MyApp extends StatelessWidget {

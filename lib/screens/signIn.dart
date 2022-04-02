@@ -9,6 +9,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -23,11 +24,20 @@ class _SignInScreenState extends State<SignInScreen> {
   bool valid=false;
   bool flag = false;
   bool wishAll=true;
+  static late final Object;
   TextEditingController _qrdatafield = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _otpTextController = TextEditingController();
 
   EmailAuth emailAuth = new EmailAuth(sessionName: "login");
+
+  String value = "0";
+   _read() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'my_int_key';
+    value= prefs.getString(key)??"0";
+    print(value);
+  }
 
    static String RANDOMWORDS(length) {
     String result = '';
@@ -36,7 +46,7 @@ class _SignInScreenState extends State<SignInScreen> {
     for (int i = 0; i < length; i += 1) {
       result += characters[Random().nextInt(62)];
     }
-    print(result);
+    print("///////////////////////////////////////////////"+result);
     return result;
   }
 
@@ -77,7 +87,14 @@ class _SignInScreenState extends State<SignInScreen> {
     }
 
   }
-
+  _save() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'my_int_key';
+    value = qrData;
+    wishAll=false;
+    prefs.setString(key, value);
+    print('saved $value');
+  }
   bool verify() {
     String eotp=_otpTextController.value.text;
     if(otp==eotp){
@@ -85,16 +102,16 @@ class _SignInScreenState extends State<SignInScreen> {
         qrData = _qrdatafield.text;
       });
       Navigator.of(context).pop();
-      wishAll=false;
+      _save();
       return true;
     }
     Navigator.of(context).pop();
     return false;
   }
 
-
   @override
   Widget build(BuildContext context) {
+    _read();
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -119,14 +136,16 @@ class _SignInScreenState extends State<SignInScreen> {
                 SizedBox(
                   height: 60,
                 ),
-                if(!wishAll) ...[
+
+                if(!wishAll || value!="0") ...[
                   QrImage(
                     //place where the QR Image will be shown
-                    data: qrData,
+                    data: value,
                     size: 200,
                   ),
                 ],
-                if (wishAll) ... [ // These children are only visible if condition is true
+                if (wishAll && value=="0") ... [
+                 // These children are only visible if condition is true
             reusableTextField("Enter PID", Icons.person_outline, false,
             _qrdatafield),
                   SizedBox(
@@ -198,5 +217,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
         ],
       ),);
+
+
+
 }
 
