@@ -1,6 +1,9 @@
+
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:login_2/reusable_widgets/reusable_widget.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -17,13 +20,16 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   //String qrData = "https://github.com/neon97";
   String qrData = "";
+  bool valid=false;
+  bool flag = false;
+  bool wishAll=true;
   TextEditingController _qrdatafield = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _otpTextController = TextEditingController();
 
   EmailAuth emailAuth = new EmailAuth(sessionName: "login");
 
-   String RANDOMWORDS(length) {
+   static String RANDOMWORDS(length) {
     String result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
@@ -34,26 +40,56 @@ class _SignInScreenState extends State<SignInScreen> {
     return result;
   }
 
-  void sendOtp() async {
-    print("///////////////////////////////////////////////////////////////hello"+_emailTextController.value.text);
-    String otp=RANDOMWORDS(5);
-    String username="incrideamail@gmail.com";
-    String password="Qwerty1234@";
-    final smtpServer = gmail(username,password);
-    final equivalentMessage = Message()
-      ..from = Address(username, 'OTP Service 😀')
-      ..recipients.add(Address('deepthi15salian@gmail.com'))
-      ..subject = 'OTP :: 😀 :: '
-      ..text = 'Your otp is ${otp}';
 
-    final sendReport2 = await send(equivalentMessage, smtpServer);
+
+  String otp=RANDOMWORDS(5);
+  void sendOtp() async {
+
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('Participants')
+        .where('paid', isEqualTo: true)
+        .where('email',isEqualTo: _emailTextController.value.text)
+    //.where('pid',isEqualTo:_qrdatafield.value.text)
+        .get();
+    print(querySnapshot.size);
+
+    for (var doc in querySnapshot.docs) {
+      // Getting data directly
+      String name = doc.get('name');
+      if(name==null)
+        Fluttertoast.showToast(
+            msg: "user doesn't Exist",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+        );
+      else{
+          String username="incrideamail@gmail.com";
+          String password="Qwerty1234@";
+          final smtpServer = gmail(username,password);
+          final equivalentMessage = Message()
+            ..from = Address(username, 'OTP Service 😀')
+            ..recipients.add(Address('deepthi15salian@gmail.com'))
+            ..subject = 'OTP :: 😀 :: '
+            ..text = 'Your otp is ${otp}';
+
+          final sendReport2 = await send(equivalentMessage, smtpServer);
+        }
+    }
+
   }
 
   bool verify() {
-    print(emailAuth.validateOtp(
-        recipientMail: _emailTextController.value.text,
-        userOtp: _otpTextController.value.text) );
-    return true;
+    String eotp=_otpTextController.value.text;
+    if(otp==eotp){
+      setState(() {
+        qrData = _qrdatafield.text;
+      });
+      Navigator.of(context).pop();
+      wishAll=false;
+      return true;
+    }
+    Navigator.of(context).pop();
+    return false;
   }
 
 
@@ -76,60 +112,61 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 //logoWidget("assets/images/Font Black.jpg"),
                 //image: DecorationImage(image:new AssetImage("assets/images/logo.jpg"), fit: BoxFit.cover,opacity: 0.8),
-                QrImage(
-                  //place where the QR Image will be shown
-                  data: qrData,
-                  size: 200,
-                ),
+
+
+            Column(
+              children: [
                 SizedBox(
                   height: 60,
                 ),
-                reusableTextField("Enter PID", Icons.person_outline, false,
-                    _qrdatafield),
-
-                SizedBox(
-                  height: 20,
-                ),
-                reusableTextField("Enter Email", Icons.mail_outline, false,
-                    _emailTextController),
-                SizedBox(
-                  height: 20,
-                ),
-
-                SizedBox(
-                  height: 20,
-                ),
-
-                Padding(
-                  padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
-                  child: FlatButton(
-                    padding: EdgeInsets.all(15.0),
-                    onPressed: () async {
-                      //firebase code
-                      sendOtp();
-                      openDialog();
-
-                      if (_qrdatafield.text.isEmpty) {        //a little validation for the textfield
-                        setState(() {
-                          qrData = "";
-                        });
-                      } else {
-                        setState(() {
-                          qrData = _qrdatafield.text;
-                        });
-                      }
-
-                    },
-                    child: Text(
-                      "Generate QR",
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.black, width: 5.0),
-                        borderRadius: BorderRadius.circular(20.0)),
+                if(!wishAll) ...[
+                  QrImage(
+                    //place where the QR Image will be shown
+                    data: qrData,
+                    size: 200,
                   ),
-                )
+                ],
+                if (wishAll) ... [ // These children are only visible if condition is true
+            reusableTextField("Enter PID", Icons.person_outline, false,
+            _qrdatafield),
+                  SizedBox(
+                    height: 20,
+                  ),
+        reusableTextField("Enter Email", Icons.mail_outline, false,
+            _emailTextController),
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
+                    child: FlatButton(
+                      padding: EdgeInsets.all(15.0),
+                      onPressed: () async {
+                        //firebase code
+                        sendOtp();
+                        openDialog();
+                      },
+                      child: Text(
+                        "Generate QR",
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      ),
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.black, width: 5.0),
+                          borderRadius: BorderRadius.circular(20.0)),
+                    ),
+                  )
+                ],
+              ],
+            ),
+
+
+
 
 
               ],
@@ -156,11 +193,10 @@ class _SignInScreenState extends State<SignInScreen> {
           TextButton(
             child: Text('SUBMIT'),
             onPressed: verify,
+
           ),
+
         ],
       ),);
-  void submit() {
-    Navigator.of(context).pop();
-  }
-
 }
+
