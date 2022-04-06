@@ -18,7 +18,53 @@ class MyCardWidget extends StatelessWidget {
   const MyCardWidget({Key? key}) : super(key: key);
 
   @override
+
   Widget build(BuildContext context) {
+    return Scaffold(
+
+        body: GridView.builder(
+
+          itemCount: 10,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: 8.0 / 8.0,
+            crossAxisCount: 2,
+          ),
+
+          itemBuilder: (BuildContext context, int index) {
+
+            return Padding(
+                padding: EdgeInsets.all(5),
+                child: Card(
+                    semanticContainer: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage('assets/no_image.png'),
+                                    fit: BoxFit.fill),
+                              ),
+                            )),
+                        Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              "Name",
+                              style: TextStyle(fontSize: 18.0),
+                            )),
+                      ],
+                    )));
+
+          },
+        ));
+  }
+
+  /*Widget build(BuildContext context) {
     return Center(
       child: Container(
         width: 300,
@@ -81,5 +127,5 @@ class MyCardWidget extends StatelessWidget {
           ),*/
 
     );
-  }
+  }*/
 }
