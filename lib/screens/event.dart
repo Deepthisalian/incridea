@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Events extends StatelessWidget {
@@ -17,6 +18,8 @@ class MyCardWidget extends StatelessWidget {
 
   const MyCardWidget({Key? key}) : super(key: key);
 
+  get spacecraft => null;
+
   @override
 
   Widget build(BuildContext context) {
@@ -34,6 +37,11 @@ class MyCardWidget extends StatelessWidget {
 
             return Padding(
                 padding: EdgeInsets.all(5),
+                child: InkWell(
+                    onTap: () {
+                      print("Click event on Container");
+                      showDialogFunc(context);
+                    },
                 child: Card(
                     semanticContainer: true,
                     shape: RoundedRectangleBorder(
@@ -58,74 +66,96 @@ class MyCardWidget extends StatelessWidget {
                               style: TextStyle(fontSize: 18.0),
                             )),
                       ],
-                    )));
+                    )
+            )
+                ),
+            );
 
           },
         ));
   }
 
-  /*Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: 300,
-        height: 200,
-        padding: new EdgeInsets.all(10.0),
-        child: Card(
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/dp.jpeg"),
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.topCenter,
+  showDialogFunc(context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: Material(
+            type: MaterialType.transparency,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
               ),
-            ),
+              padding: EdgeInsets.all(15),
+              height: 320,
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(25),
+                    child: FlatButton(
+                      child: Text('Show More', style: TextStyle(fontSize: 20.0),),
+                      color: Colors.blueAccent,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        //FireStoreDataBase {
+                        List studentsList = [];
+                        final CollectionReference collectionRef =
+                        FirebaseFirestore.instance.collection("events");
+                        print("************************************************************************");
 
-            child: const ListTile(
-              leading: Icon(Icons.album, size: 60),
-              title: Text(
-                  'Sonu Nigam',
-                  style: TextStyle(fontSize: 30.0)
-              ),
-              subtitle: Text(
-                  'Best of Sonu Nigam Music.',
-                  style: TextStyle(fontSize: 18.0)
+                        Future getData() async {
+                        try {
+                        //to get data from a single/particular document alone.
+                        // var temp = await collectionRef.doc("<your document ID here>").get();
+
+                        // to get data from all documents sequentially
+                        await collectionRef.get().then((querySnapshot) {
+                        for (var result in querySnapshot.docs) {
+                        studentsList.add(result.data());
+                        }
+                        print(querySnapshot.size);
+                        });
+
+
+                        return studentsList;
+                        } catch (e) {
+                        debugPrint("Error - $e");
+                        return e;
+                        }
+                        }
+                        getData();
+                        //}
+                        },
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(25),
+                    child: FlatButton(
+                      child: Text('Register', style: TextStyle(fontSize: 20.0),),
+                      color: Colors.blueAccent,
+                      textColor: Colors.white,
+                      onPressed: () {
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-        ),
-      ),
-      /*child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-
-
-            color: Colors.red,
-            elevation: 10,
-            child: Column(
-
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  //leading: Icon(Icons.album, size: 60),
-
-                  title: Text(
-                      'Sonu Nigam',
-                      style: TextStyle(fontSize: 30.0)
-                  ),
-                  subtitle: Text(
-                      'Best of Sonu Nigam Music.',
-                      style: TextStyle(fontSize: 18.0)
-                  ),
-                ),
-                ButtonBar(
-                  children: <Widget>[
-                  ],
-                ),
-              ],
-            ),
-          ),*/
-
+        );
+      },
     );
-  }*/
+  }
 }
