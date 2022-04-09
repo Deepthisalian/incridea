@@ -21,7 +21,7 @@ class _homeState extends State<home> {
             (children: <Widget>[
             SignInScreen(),
             HomePage(),
-            AboutUs(),
+            ProfileUI(),
 
 
           ]

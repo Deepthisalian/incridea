@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'HomePage.dart';
 
 class Events extends StatelessWidget {
   @override
@@ -18,16 +19,17 @@ class MyCardWidget extends StatelessWidget {
 
   const MyCardWidget({Key? key}) : super(key: key);
 
-  get spacecraft => null;
 
   @override
 
   Widget build(BuildContext context) {
+
     return Scaffold(
 
         body: GridView.builder(
-
+          
           itemCount: 10,
+          //itemCount: studentsList.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             childAspectRatio: 8.0 / 8.0,
             crossAxisCount: 2,
@@ -108,10 +110,31 @@ class MyCardWidget extends StatelessWidget {
                       child: Text('Show More', style: TextStyle(fontSize: 20.0),),
                       color: Colors.blueAccent,
                       textColor: Colors.white,
-                      onPressed: () {
+                      onPressed: () async {
+
+                        /*final querySnapshot = await FirebaseFirestore.instance.collection("Events").get();
+                        print(querySnapshot.size);
+                         List studentsList = [];
+
+                        for (var doc in querySnapshot.docs) {
+                          // Getting data directly
+                      
+                          studentsList.add(doc.data());
+                          String name = doc.get('name');
+                          print(name);
+                        }
+
+                        print(studentsList);*/
+
                         //FireStoreDataBase {
-                        List studentsList = [];
-                        final CollectionReference collectionRef =
+                        
+
+
+                          // Getting data from map
+                          /*Map<String, dynamic> data = doc.data();
+                          int age = data['age'];*/
+
+                        /*final CollectionReference collectionRef =
                         FirebaseFirestore.instance.collection("events");
                         print("************************************************************************");
 
@@ -133,11 +156,12 @@ class MyCardWidget extends StatelessWidget {
                         } catch (e) {
                         debugPrint("Error - $e");
                         return e;
-                        }
-                        }
-                        getData();
+                        }*/
+                        //getdata();
+                        ;}
+
                         //}
-                        },
+                        //},
                     ),
                   ),
                   Container(
