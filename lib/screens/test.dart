@@ -2,78 +2,153 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:ui';
 import 'package:flutter/rendering.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class GeneratePage extends StatefulWidget {
+//void main() => runApp(FireList());
+
+class FireList extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() => GeneratePageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Firebase Listview',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyList(),
+    );
+  }
 }
 
-class GeneratePageState extends State<GeneratePage> {
-  String qrData =
-      "https://github.com/neon97";  // already generated qr code when the page opens
+/*class MyListView extends StatefulWidget {
+  @override
+  _MyListViewState createState() => _MyListViewState();
+}
+
+class _MyListViewState extends State<MyListView> {
+  int _upCounter = 0;
+  int _downCounter = 0;
+  var _newdata;
+  var myDatabase = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR Code Generator'),
-        actions: <Widget>[],
+        title: Text('Firebse Listview'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyList()),
+              );
+            },
+            icon: Icon(Icons.multiline_chart),
+          )
+        ],
       ),
-      body: Container(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            QrImage(
-              //plce where the QR Image will be shown
-              data: qrData,
-            ),
-            SizedBox(
-              height: 40.0,
-            ),
-            Text(
-              "New QR Link Generator",
-              style: TextStyle(fontSize: 20.0),
-            ),
-            TextField(
-              controller: qrdataFeed,
-              decoration: InputDecoration(
-                hintText: "Input your link or data",
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
-              child: FlatButton(
-                padding: EdgeInsets.all(15.0),
-                onPressed: () async {
-
-                  if (qrdataFeed.text.isEmpty) {        //a little validation for the textfield
-                    setState(() {
-                      qrData = "";
-                    });
-                  } else {
-                    setState(() {
-                      qrData = qrdataFeed.text;
-                    });
-                  }
-
-                },
-                child: Text(
-                  "Generate QR",
-                  style: TextStyle(
-                      color: Colors.blue, fontWeight: FontWeight.bold),
-                ),
-                shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.blue, width: 3.0),
-                    borderRadius: BorderRadius.circular(20.0)),
-              ),
-            )
-          ],
-        ),
+      // body: Center(
+      //   child: Text(
+      //       "Cloud Firestore contains this sentence:\nFetch Attemp: $_downCounter\nData: $_datafromfirestore"),
+      // ),
+      body: StreamBuilder(
+        stream: myDatabase.collection('Events').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            Center(
+              child: Text("\nCaught an error in the firebase thingie... :| "),
+            );
+          }
+          if (!snapshot.hasData) {
+            return Center(
+              child: Text("\nHang On, We are building your app !"),
+            );
+          } else {
+            var mydata = snapshot.data;
+            print(mydata);
+            return Center(
+              child: Text(
+                  //"Cloud Firestore contains this sentence:\nFetch Attempt: $_downCounter\nData: $_newdata"),
+                  "inside child"),
+            );
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            _downCounter++;
+          });
+        },
+        child: Icon(Icons.cloud_download),
+        tooltip: 'Download Data',
       ),
     );
   }
+}*/
 
-  final qrdataFeed = TextEditingController();
+class MyList extends StatefulWidget {
+  @override
+  _MyListState createState() => _MyListState();
+}
+
+class _MyListState extends State<MyList> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("ListView Firestore"),
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection("Events").snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) return new Text('${snapshot.error}');
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            case ConnectionState.active:
+            case ConnectionState.done:
+              if (snapshot.hasError)
+                return Center(child: Text('Error: ${snapshot.error}'));
+              if (!snapshot.hasData) return Text('No data finded!');
+              /*return Card(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children:
+                    snapshot.data.documents.map((DocumentSnapshot document){
+                        return new Text(document['data']);
+                      }).toList()
+                  ),
+                ),
+              );*/
+              return Card(
+                child: Column(
+                  children: <Widget>[
+                    ListView(
+                      shrinkWrap: true,
+                     
+                            children: [Text(
+                              "Name",
+                              style: TextStyle(fontSize: 18.0),
+                            )],
+                      /*children: snapshot.data.documents.map(
+                        (DocumentSnapshot document) {
+                          return new ListTile(
+                            title: new Text(document['data']),
+                          );
+                        },
+                      ).toList(),*/
+                    ),
+                  ],
+                ),
+              );
+          }
+        },
+      ),
+    );
+  }
 }

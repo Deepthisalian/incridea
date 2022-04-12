@@ -2,6 +2,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:login_2/screens/event.dart';
+import 'package:login_2/screens/newtest.dart';
+import 'package:login_2/screens/test.dart';
 
 class HomePage extends StatelessWidget {
   List studentsList = [];
@@ -45,7 +47,7 @@ class HomePage extends StatelessWidget {
 
                         print(studentsList);
                     Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Events()
+                    MaterialPageRoute(builder: (context) => NoteList()
                     ));
               },
             ),

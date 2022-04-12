@@ -25,8 +25,9 @@ class MyCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-
-        body: GridView.builder(
+    
+          
+          body: GridView.builder(
           
           itemCount: 10,
           //itemCount: studentsList.length,
@@ -74,7 +75,9 @@ class MyCardWidget extends StatelessWidget {
             );
 
           },
-        ));
+        )
+        
+        );
   }
 
   showDialogFunc(context) {
@@ -182,4 +185,7 @@ class MyCardWidget extends StatelessWidget {
       },
     );
   }
+
+
+
 }
