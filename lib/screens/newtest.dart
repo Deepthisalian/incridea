@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/rendering.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class NoteList extends StatelessWidget {
+/*class NoteList extends StatelessWidget {
   final db = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
@@ -37,4 +37,7 @@ class NoteList extends StatelessWidget {
       ),
     );
   }
-}
+}*/
+
+
+

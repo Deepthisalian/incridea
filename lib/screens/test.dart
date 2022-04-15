@@ -1,154 +1,203 @@
 import 'package:flutter/material.dart';
+import 'package:login_2/screens/details.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:ui';
 import 'package:flutter/rendering.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-//void main() => runApp(FireList());
-
-class FireList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Firebase Listview',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyList(),
-    );
-  }
+class Item{
+  String title;
+  String longText;
+  String imageUrl;
+  Item({required this.title,required this.longText,required this.imageUrl});
 }
 
-/*class MyListView extends StatefulWidget {
+class FirstScreen extends StatefulWidget {
   @override
-  _MyListViewState createState() => _MyListViewState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyListViewState extends State<MyListView> {
-  int _upCounter = 0;
-  int _downCounter = 0;
-  var _newdata;
-  var myDatabase = FirebaseFirestore.instance;
+class _MyHomePageState extends State<FirstScreen> {
+  List<Item> _itemList = [
+    Item(title: "title1", longText: "longtext1", imageUrl: "https://picsum.photos/200/300"),
+    Item(title: "tite2", longText: "longtext2", imageUrl: "https://picsum.photos/200/300"),
+    Item(title: "tite3", longText: "longtext3", imageUrl: "https://picsum.photos/200/300"),
+    Item(title: "tite4", longText: "longtext4", imageUrl: "https://picsum.photos/200/300"),
+    Item(title: "tite5", longText: "longtext5", imageUrl: "https://picsum.photos/200/300")
+  ];
 
+
+  //List<Item> _itemList = [{name: capture the flag, completed: false, maxParticipants: 2}, {name: hogathon, completed: false, maxParticipants: 1}, {name: roadies, completed: false, maxParticipants: 1}];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Firebse Listview'),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyList()),
-              );
-            },
-            icon: Icon(Icons.multiline_chart),
-          )
-        ],
-      ),
-      // body: Center(
-      //   child: Text(
-      //       "Cloud Firestore contains this sentence:\nFetch Attemp: $_downCounter\nData: $_datafromfirestore"),
-      // ),
-      body: StreamBuilder(
-        stream: myDatabase.collection('Events').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            Center(
-              child: Text("\nCaught an error in the firebase thingie... :| "),
-            );
-          }
-          if (!snapshot.hasData) {
-            return Center(
-              child: Text("\nHang On, We are building your app !"),
-            );
-          } else {
-            var mydata = snapshot.data;
-            print(mydata);
-            return Center(
-              child: Text(
-                  //"Cloud Firestore contains this sentence:\nFetch Attempt: $_downCounter\nData: $_newdata"),
-                  "inside child"),
-            );
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _downCounter++;
-          });
-        },
-        child: Icon(Icons.cloud_download),
-        tooltip: 'Download Data',
-      ),
-    );
-  }
-}*/
-
-class MyList extends StatefulWidget {
-  @override
-  _MyListState createState() => _MyListState();
-}
-
-class _MyListState extends State<MyList> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("ListView Firestore"),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection("Events").snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) return new Text('${snapshot.error}');
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-            case ConnectionState.waiting:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            case ConnectionState.active:
-            case ConnectionState.done:
-              if (snapshot.hasError)
-                return Center(child: Text('Error: ${snapshot.error}'));
-              if (!snapshot.hasData) return Text('No data finded!');
-              /*return Card(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children:
-                    snapshot.data.documents.map((DocumentSnapshot document){
-                        return new Text(document['data']);
-                      }).toList()
-                  ),
-                ),
-              );*/
-              return Card(
-                child: Column(
-                  children: <Widget>[
-                    ListView(
-                      shrinkWrap: true,
-                     
-                            children: [Text(
-                              "Name",
-                              style: TextStyle(fontSize: 18.0),
-                            )],
-                      /*children: snapshot.data.documents.map(
-                        (DocumentSnapshot document) {
-                          return new ListTile(
-                            title: new Text(document['data']),
-                          );
-                        },
-                      ).toList(),*/
+        appBar: AppBar(
+          title: Text('Events'),
+        ),
+        body: Center(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: 8.0 / 8.0,
+            crossAxisCount: 2,
+          ),
+          itemCount: _itemList.length,
+          itemBuilder: (context, index) {
+            
+            return GestureDetector(
+                onTap: () {
+                  showDialogFunc(context,  index);
+                   
+                  
+                },
+                child: Card(
+                   semanticContainer: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
-                  ],
-                ),
-              );
-          }
-        },
-      ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage('assets/no_image.png'),
+                                    fit: BoxFit.fill),
+                              ),
+                            )),
+                        Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              _itemList[index].title,
+                              
+                              style: TextStyle(fontSize: 18.0),
+                            )),
+                      ],
+                    )
+            
+                )
+                );
+                //child: Container(margin: EdgeInsets.all(20), child: Text(_itemList[index].title)));
+              },
+        )));
+  }
+      showDialogFunc(context, index) {
+      return showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: Material(
+            type: MaterialType.transparency,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+              padding: EdgeInsets.all(15),
+              height: 320,
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(25),
+                    child: FlatButton(
+                      child: Text('Show More', style: TextStyle(fontSize: 20.0),),
+                    
+                      color: Colors.blueAccent,
+                      textColor: Colors.white,
+                    
+                      onPressed: ()  {
+                        Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DetailScreen(item: _itemList[index], key: null,)),
+                  );
+            
+
+                        /*final querySnapshot = await FirebaseFirestore.instance.collection("Events").get();
+                        print(querySnapshot.size);
+                         List studentsList = [];
+
+                        for (var doc in querySnapshot.docs) {
+                          // Getting data directly
+                      
+                          studentsList.add(doc.data());
+                          String name = doc.get('name');
+                          print(name);
+                        }
+
+                        print(studentsList);*/
+
+                        //FireStoreDataBase {
+                        
+
+
+                          // Getting data from map
+                          /*Map<String, dynamic> data = doc.data();
+                          int age = data['age'];*/
+
+                        /*final CollectionReference collectionRef =
+                        FirebaseFirestore.instance.collection("events");
+                        print("************************************************************************");
+
+                        Future getData() async {
+                        try {
+                        //to get data from a single/particular document alone.
+                        // var temp = await collectionRef.doc("<your document ID here>").get();
+
+                        // to get data from all documents sequentially
+                        await collectionRef.get().then((querySnapshot) {
+                        for (var result in querySnapshot.docs) {
+                        studentsList.add(result.data());
+                        }
+                        print(querySnapshot.size);
+                        });
+
+
+                        return studentsList;
+                        } catch (e) {
+                        debugPrint("Error - $e");
+                        return e;
+                        }*/
+                        //getdata();
+                        ;}
+
+                        //}
+                        //},
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(25),
+                    child: FlatButton(
+                      child: Text('Register', style: TextStyle(fontSize: 20.0),),
+                      color: Colors.blueAccent,
+                      textColor: Colors.white,
+                      onPressed: () {
+                      },
+                    ),
+                  ),
+                  Text(_itemList[index].title),
+                  Text(_itemList[index].longText),
+
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
+   
 }
+
+

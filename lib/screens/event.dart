@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:login_2/screens/details.dart';
 import 'HomePage.dart';
 
 class Events extends StatelessWidget {
@@ -44,7 +45,9 @@ class MyCardWidget extends StatelessWidget {
                     onTap: () {
                       print("Click event on Container");
                       showDialogFunc(context);
+                      
                     },
+                   
                 child: Card(
                     semanticContainer: true,
                     shape: RoundedRectangleBorder(
