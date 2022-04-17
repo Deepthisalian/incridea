@@ -5,11 +5,20 @@ import 'dart:ui';
 import 'package:flutter/rendering.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../reusable_widgets/reusable_widget.dart';
+
 class Item{
   String title;
   String longText;
   String imageUrl;
   Item({required this.title,required this.longText,required this.imageUrl});
+}
+
+class Events{
+  String name;
+  bool completed;
+  int maxparticipants;
+  Events({required this.name,required this.completed,required this.maxparticipants});
 }
 
 class FirstScreen extends StatefulWidget {
@@ -18,23 +27,25 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<FirstScreen> {
+  int currentIndex = 0;
+
   List<Item> _itemList = [
     Item(title: "title1", longText: "longtext1", imageUrl: "https://picsum.photos/200/300"),
-    Item(title: "tite2", longText: "longtext2", imageUrl: "https://picsum.photos/200/300"),
-    Item(title: "tite3", longText: "longtext3", imageUrl: "https://picsum.photos/200/300"),
-    Item(title: "tite4", longText: "longtext4", imageUrl: "https://picsum.photos/200/300"),
-    Item(title: "tite5", longText: "longtext5", imageUrl: "https://picsum.photos/200/300")
+    Item(title: "title2", longText: "longtext2", imageUrl: "https://picsum.photos/200/300"),
+    Item(title: "title3", longText: "longtext3", imageUrl: "https://picsum.photos/200/300"),
+    Item(title: "title4", longText: "longtext4", imageUrl: "https://picsum.photos/200/300"),
+    Item(title: "title5", longText: "longtext5", imageUrl: "https://picsum.photos/200/300")
   ];
 
-
-  //List<Item> _itemList = [{name: capture the flag, completed: false, maxParticipants: 2}, {name: hogathon, completed: false, maxParticipants: 1}, {name: roadies, completed: false, maxParticipants: 1}];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text('Events'),
+          centerTitle: true,
         ),
         body: Center(
+       
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             childAspectRatio: 8.0 / 8.0,
@@ -80,7 +91,38 @@ class _MyHomePageState extends State<FirstScreen> {
                 );
                 //child: Container(margin: EdgeInsets.all(20), child: Text(_itemList[index].title)));
               },
-        )));
+        )
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.blue,
+          selectedItemColor: Colors.white,
+          currentIndex: currentIndex,
+          onTap: (index) => setState(() => currentIndex = index),
+          items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Day 1',
+            backgroundColor: Colors.blue,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Day 2',
+            backgroundColor: Colors.green,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Day 3',
+            backgroundColor: Colors.blue,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Day 4',
+            backgroundColor: Colors.red,
+          ),
+          
+        ],)
+        );
   }
       showDialogFunc(context, index) {
       return showDialog(
@@ -103,6 +145,13 @@ class _MyHomePageState extends State<FirstScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(5),
                   ),
+                 Container(
+          alignment: FractionalOffset.topRight,
+          child: GestureDetector(child: Icon(Icons.clear,color: Colors.blue,),
+
+          onTap: (){
+            Navigator.pop(context);
+          }),),
                   SizedBox(
                     height: 10,
                   ),
@@ -120,7 +169,7 @@ class _MyHomePageState extends State<FirstScreen> {
                       onPressed: ()  {
                         Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DetailScreen(item: _itemList[index], key: null,)),
+                    MaterialPageRoute(builder: (context) => DetailScreen(item: _itemList[index], key: null,),)
                   );
             
 
@@ -197,7 +246,7 @@ class _MyHomePageState extends State<FirstScreen> {
       },
     );
   }
-   
+
 }
 
 

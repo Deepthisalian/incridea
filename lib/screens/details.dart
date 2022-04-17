@@ -3,8 +3,9 @@ import 'package:login_2/screens/test.dart';
 
 
 class DetailScreen extends StatelessWidget {
-  final Item item;
+   final Item item;
   const DetailScreen({Key? key,required this.item}) : super(key: key);
+  //const DetailScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,8 @@ class DetailScreen extends StatelessWidget {
         child: Column(
           children:[
             Text(item.longText),
-            Image.network(item.imageUrl,fit: BoxFit.fill,),
+            Text("title")
+            //Image.network(item.imageUrl,fit: BoxFit.fill,),
           ]
         ),
       ),

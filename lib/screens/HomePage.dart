@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
                           print(name);
                         }
 
-                        print(studentsList);
+                        //print(studentsList);
                     Navigator.push(context,
                     MaterialPageRoute(builder: (context) => FirstScreen()
                     ));
