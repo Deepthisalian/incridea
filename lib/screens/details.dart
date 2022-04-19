@@ -16,7 +16,7 @@ class DetailScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children:[
-            Text(item.longText),
+            Text(item.Sdescription),
             Text("title")
             //Image.network(item.imageUrl,fit: BoxFit.fill,),
           ]

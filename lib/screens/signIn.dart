@@ -59,20 +59,28 @@ class _SignInScreenState extends State<SignInScreen> {
         .collection('Participants')
         .where('paid', isEqualTo: true)
         .where('email',isEqualTo: _emailTextController.value.text)
-    //.where('pid',isEqualTo:_qrdatafield.value.text)
+        //.where('pid',isEqualTo:_qrdatafield.value.text)
         .get();
     print(querySnapshot.size);
+    if(querySnapshot.size == 0)
+    {
+      Fluttertoast.showToast(
+                msg: "Invalid credentials",
+              );
+              return;
+    }
 
-    for (var doc in querySnapshot.docs) {
+   
       // Getting data directly
-      String name = doc.get('name');
+      /*String name = doc.get('name');
       if(name==null)
         Fluttertoast.showToast(
             msg: "user doesn't Exist",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
-        );
+        );*/
       else{
+          openDialog();
           String username="incrideamail@gmail.com";
           String password="Qwerty1234@";
           final smtpServer = gmail(username,password);
@@ -84,7 +92,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
           final sendReport2 = await send(equivalentMessage, smtpServer);
         }
-    }
+
+    
 
   }
   _save() async {
@@ -95,17 +104,23 @@ class _SignInScreenState extends State<SignInScreen> {
     prefs.setString(key, value);
     print('saved $value');
   }
+
   bool verify() {
     String eotp=_otpTextController.value.text;
     if(otp==eotp){
       setState(() {
         qrData = _qrdatafield.text;
       });
-      Navigator.of(context).pop();
       _save();
+      Navigator.of(context).pop();
       return true;
     }
-    Navigator.of(context).pop();
+  else {
+      Fluttertoast.showToast(
+                 msg: "Invalid OTP",
+               );
+    }
+    
     return false;
   }
 
@@ -168,7 +183,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       onPressed: () async {
                         //firebase code
                         sendOtp();
-                        openDialog();
                       },
                       child: Text(
                         "Generate QR",
@@ -212,7 +226,6 @@ class _SignInScreenState extends State<SignInScreen> {
           TextButton(
             child: Text('SUBMIT'),
             onPressed: verify,
-
           ),
 
         ],
