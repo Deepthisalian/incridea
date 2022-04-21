@@ -80,56 +80,9 @@ class NoteList extends StatelessWidget {
                       onPressed: ()  {
                         Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DetailScreen()),
+                    MaterialPageRoute(builder: (context) => DetailScreen(item: _itemList[index], key: null,)),
                   );
-            
-
-                        /*final querySnapshot = await FirebaseFirestore.instance.collection("Events").get();
-                        print(querySnapshot.size);
-                         List studentsList = [];
-
-                        for (var doc in querySnapshot.docs) {
-                          // Getting data directly
                       
-                          studentsList.add(doc.data());
-                          String name = doc.get('name');
-                          print(name);
-                        }
-
-                        print(studentsList);*/
-
-                        //FireStoreDataBase {
-                        
-
-
-                          // Getting data from map
-                          /*Map<String, dynamic> data = doc.data();
-                          int age = data['age'];*/
-
-                        /*final CollectionReference collectionRef =
-                        FirebaseFirestore.instance.collection("events");
-                        print("************************************************************************");
-
-                        Future getData() async {
-                        try {
-                        //to get data from a single/particular document alone.
-                        // var temp = await collectionRef.doc("<your document ID here>").get();
-
-                        // to get data from all documents sequentially
-                        await collectionRef.get().then((querySnapshot) {
-                        for (var result in querySnapshot.docs) {
-                        studentsList.add(result.data());
-                        }
-                        print(querySnapshot.size);
-                        });
-
-
-                        return studentsList;
-                        } catch (e) {
-                        debugPrint("Error - $e");
-                        return e;
-                        }*/
-                        //getdata();
                         ;}
 
                         //}
@@ -146,7 +99,7 @@ class NoteList extends StatelessWidget {
                       },
                     ),
                   ),
-                Text(doc.get('name')),
+                //Text(doc.get('name')),
                  // Text(_itemList[index].longText),
 
                 ],

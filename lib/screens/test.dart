@@ -98,7 +98,7 @@ class _MyHomePageState extends State<FirstScreen> {
     Center(child: Text('Day 4'))
   ];*/
 
-  List<Item> _itemList = [
+  final List<Item> _itemList = [
     /*Item(title: "title1", longText: "longtext1", imageUrl: "https://picsum.photos/200/300"),
     Item(title: "title2", longText: "longtext2", imageUrl: "https://picsum.photos/200/300"),
     Item(title: "title3", longText: "longtext3", imageUrl: "https://picsum.photos/200/300"),
@@ -125,26 +125,39 @@ class _MyHomePageState extends State<FirstScreen> {
     Item(title: "Duet Dance", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: 'time'),
     Item(title: "Aeromania", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
      ];
-  
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Events'),
-          centerTitle: true,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                showSearch(context: context, delegate: MySearchDelegate(),
-                );
-              },
-               )
-          ],
-        ),
-        body: Center(
-          child: Column(
+      final List<Item> _itemList2 = [
+Item(title: "Lazzerina", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Paint & Pixel", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Watercraft Exhibition", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Robo Scoccer", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "General Quiz", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Improv", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Money Heist", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Desafio", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Roadies", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Stomp That", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: 'time'),
+    Item(title: "Couture", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: 'time'),
+    Item(title: "Riff Off", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: 'time'),
+    Item(title: "Bob The Builder", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: 'time'),
+    Item(title: "Da Vinci", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: 'time'),
+    Item(title: "Thinking Cap", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: 'time'),
+    Item(title: "Wired", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: 'time'),
+    Item(title: "Webbed", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: 'time'),
+    Item(title: "Vibe", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: 'time'),
+    Item(title: "Code Studio", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: 'time'),
+    Item(title: "Prove Us Wrong", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Techtainmet", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Bridge It", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Shutter Up", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Escape Room", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "Better Be Letter", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+    Item(title: "MockPress", Sdescription: "Sdescription", locatiom: "locatiom", Rounds: "Rounds", time: "time"),
+     ];
+   List Screens=[];
+  _MyHomePageState(){
+    Screens=[
+    Center(
+       child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Expanded(
@@ -185,6 +198,61 @@ class _MyHomePageState extends State<FirstScreen> {
                             padding: EdgeInsets.all(10.0),
                             child: Text(
                               _itemList[index].title,
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(fontSize: 18.0,),
+                            )),
+                      ],
+                    )
+            
+                )
+                );
+                //child: Container(margin: EdgeInsets.all(20), child: Text(_itemList[index].title)));
+              },
+        ),
+        ),
+        ],),),
+     Center(
+       child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: 8.0 / 8.0,
+            crossAxisCount: 2,
+          ),
+          itemCount: _itemList2.length,
+          
+          itemBuilder: (context, index) {
+            
+            return GestureDetector(
+                onTap: () {
+                  showDialogFunc(context,  index);
+                   
+                  
+                },
+                child: Card(
+                   semanticContainer: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage('assets/no_image.png'),
+                                    fit: BoxFit.fill),
+                              ),
+                            )),
+                        Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              _itemList2[index].title,
                               
                               style: TextStyle(fontSize: 18.0),
                             )),
@@ -198,6 +266,25 @@ class _MyHomePageState extends State<FirstScreen> {
         ),
         ),
         ],),),
+    Center(child: Text("Home1"),),
+    Center(child: Text("Home2"),),
+  ];
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Events'),
+          centerTitle: true,
+          actions: [
+          IconButton(
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => SearchPage())),
+              icon: Icon(Icons.search))
+          ],
+        ),
+        body: Screens[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.blue,
@@ -263,7 +350,10 @@ class _MyHomePageState extends State<FirstScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
+
+                  Text(_itemList[index].title),
+                  Text(_itemList[index].Sdescription),
+                                    Container(
                     margin: EdgeInsets.all(25),
                     child: FlatButton(
                       child: Text('Show More', style: TextStyle(fontSize: 20.0),),
@@ -279,18 +369,6 @@ class _MyHomePageState extends State<FirstScreen> {
                         ;}
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.all(25),
-                    child: FlatButton(
-                      child: Text('Register', style: TextStyle(fontSize: 20.0),),
-                      color: Colors.blueAccent,
-                      textColor: Colors.white,
-                      onPressed: () {
-                      },
-                    ),
-                  ),
-                  Text(_itemList[index].title),
-                  Text(_itemList[index].Sdescription),
 
                 ],
               ),
@@ -341,5 +419,36 @@ class MySearchDelegate extends SearchDelegate{
 
 
   }
+  class SearchPage extends StatelessWidget {
+  const SearchPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          // The search area here
+          title: Container(
+        width: double.infinity,
+        height: 40,
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(5)),
+        child: Center(
+          child: TextField(
+            decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    /* Clear the search field */
+                  },
+                ),
+                hintText: 'Search...',
+                border: InputBorder.none),
+          ),
+        ),
+      )),
+    );
+  }
+}
 
 

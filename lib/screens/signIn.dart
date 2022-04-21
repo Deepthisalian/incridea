@@ -112,7 +112,7 @@ class _SignInScreenState extends State<SignInScreen> {
         qrData = _qrdatafield.text;
       });
       _save();
-      Navigator.of(context).pop();
+      //Navigator.pop(context);
       return true;
     }
   else {
