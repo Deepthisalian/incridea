@@ -18,7 +18,7 @@ class ProfileUI extends StatelessWidget {
     return Column(
       children: <Widget>[
         Stack(
-          overflow: Overflow.visible,
+          //overflow: Overflow.visible,
           alignment: Alignment.center,
           children: <Widget>[
             Image.asset('assets/images/logo.png',
@@ -129,6 +129,7 @@ class ProfileUI extends StatelessWidget {
           ),
           subtitle: Center(child: Text('Data')),
         ),
+        
         ListTile(
           title: Center(
             child: Text(

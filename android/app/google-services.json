@@ -1,34 +1,113 @@
 {
   "project_info": {
-    "project_number": "599759960850",
-    "project_id": "incridemo",
-    "storage_bucket": "incridemo.appspot.com"
+    "project_number": "287531344986",
+    "project_id": "inc22-1ac78",
+    "storage_bucket": "inc22-1ac78.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:599759960850:android:0146b90d4627f00a15d1cb",
+        "mobilesdk_app_id": "1:287531344986:android:a166f41ee4967d5e31e463",
         "android_client_info": {
-          "package_name": "com.example.login_2"
+          "package_name": "com.example.inc22"
         }
       },
       "oauth_client": [
         {
-          "client_id": "599759960850-hr0ib9rr6cnnsni62vafb3j7rohdubbe.apps.googleusercontent.com",
+          "client_id": "287531344986-nas8nvhpg6asaqted7gkc3jthjk0vr9r.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAiJ0bj0WlKg5Ql2uTVm-CoeD_-bcJJYtk"
+          "current_key": "AIzaSyAjQucYs_299mGFctm86n-qSSwTFzLRzyY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "599759960850-hr0ib9rr6cnnsni62vafb3j7rohdubbe.apps.googleusercontent.com",
+              "client_id": "287531344986-nas8nvhpg6asaqted7gkc3jthjk0vr9r.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "287531344986-hlrblue2u78mda3jtrgu2m0am09qfr9t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.inc22"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287531344986:android:8ff4dec750fe335e31e463",
+        "android_client_info": {
+          "package_name": "com.example.login_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287531344986-nas8nvhpg6asaqted7gkc3jthjk0vr9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjQucYs_299mGFctm86n-qSSwTFzLRzyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287531344986-nas8nvhpg6asaqted7gkc3jthjk0vr9r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "287531344986-hlrblue2u78mda3jtrgu2m0am09qfr9t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.inc22"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287531344986:android:84a4b3ccb72039b631e463",
+        "android_client_info": {
+          "package_name": "com.example.quiz_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287531344986-nas8nvhpg6asaqted7gkc3jthjk0vr9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjQucYs_299mGFctm86n-qSSwTFzLRzyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287531344986-nas8nvhpg6asaqted7gkc3jthjk0vr9r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "287531344986-hlrblue2u78mda3jtrgu2m0am09qfr9t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.inc22"
+              }
             }
           ]
         }

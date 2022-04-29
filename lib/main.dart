@@ -4,9 +4,14 @@ import 'package:login_2/screens/home.dart';
 import 'package:login_2/screens/signIn.dart';
 import 'package:login_2/screens/test.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((value) => runApp(const MyApp()));
   runApp(const MyApp());
 }
 

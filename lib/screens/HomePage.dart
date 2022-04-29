@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:login_2/screens/event.dart';
 import 'package:login_2/screens/newtest.dart';
+import 'package:login_2/screens/scanner.dart';
 import 'package:login_2/screens/test.dart';
 
 class HomePage extends StatelessWidget {
@@ -22,6 +23,9 @@ class HomePage extends StatelessWidget {
               color: Colors.blueAccent,
               textColor: Colors.white,
               onPressed: () {
+               /* Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => qrscanner()));
+              print("here");*/
               },
             ),
           ),
@@ -37,13 +41,13 @@ class HomePage extends StatelessWidget {
                         print(querySnapshot.size);
         
 
-                        for (var doc in querySnapshot.docs) {
+                        /*for (var doc in querySnapshot.docs) {
                           // Getting data directly
                       
                           studentsList.add(doc.data());
                           String name = doc.get('name');
                           print(name);
-                        }
+                        }*/
 
                         //print(studentsList);
                     Navigator.push(context,

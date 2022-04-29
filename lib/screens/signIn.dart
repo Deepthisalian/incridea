@@ -1,4 +1,4 @@
-
+import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_auth/email_auth.dart';
@@ -10,6 +10,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timer_count_down/timer_count_down.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -19,7 +20,31 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  //String qrData = "https://github.com/neon97";
+  int _counter = 0;
+  late StreamController<int> _events;
+  bool session_timeout = false;
+
+  @override
+  initState() {
+    super.initState();
+    _events = new StreamController<int>();
+    _events.add(60);
+  }
+
+  late Timer _timer;
+  void _startTimer() {
+    _counter = 60;
+    if (_timer != null) {
+      _timer.cancel();
+    }
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      //setState(() {
+      (_counter > 0) ? _counter-- : _timer.cancel();
+      //});
+      print(_counter);
+      _events.add(_counter);
+    });
+  }
   String qrData = "";
   bool valid=false;
   bool flag = false;
@@ -50,13 +75,21 @@ class _SignInScreenState extends State<SignInScreen> {
     return result;
   }
 
+//CountdownTimerController controller;
+int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 30;
 
-
+void onEnd() {
+  print('onEnd');
+}
+// CountdownTimer(
+//   endTime: endTime,
+//   onEnd: onEnd,
+// ),
   String otp=RANDOMWORDS(5);
   void sendOtp() async {
-
+    String otp=RANDOMWORDS(5);
     final querySnapshot = await FirebaseFirestore.instance
-        .collection('Participants')
+        .collection('users')
         .where('paid', isEqualTo: true)
         .where('email',isEqualTo: _emailTextController.value.text)
         //.where('pid',isEqualTo:_qrdatafield.value.text)
@@ -70,15 +103,6 @@ class _SignInScreenState extends State<SignInScreen> {
               return;
     }
 
-   
-      // Getting data directly
-      /*String name = doc.get('name');
-      if(name==null)
-        Fluttertoast.showToast(
-            msg: "user doesn't Exist",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-        );*/
       else{
           openDialog();
           String username="incrideamail@gmail.com";
@@ -91,7 +115,7 @@ class _SignInScreenState extends State<SignInScreen> {
             ..text = 'Your otp is ${otp}';
 
           final sendReport2 = await send(equivalentMessage, smtpServer);
-        }
+       }
 
     
 
@@ -112,7 +136,7 @@ class _SignInScreenState extends State<SignInScreen> {
         qrData = _qrdatafield.text;
       });
       _save();
-      //Navigator.pop(context);
+      Navigator.of(context, rootNavigator: true).pop();
       return true;
     }
   else {
@@ -215,6 +239,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
   Future openDialog() => showDialog(
       context: context,
+       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text('Enter OTP'),
         content: TextField(
@@ -222,16 +247,42 @@ class _SignInScreenState extends State<SignInScreen> {
             controller: _otpTextController,
             decoration: InputDecoration(hintText: 'Enter OTP'),
         ),
+        
         actions: [
+          buil(context),
+           TextButton(
+            
+            child: Text('Resend OTP'),
+           
+            onPressed: session_timeout ? () => sendOtp(): null,
+           
+          ),
           TextButton(
+            
             child: Text('SUBMIT'),
             onPressed: verify,
-          ),
 
+          ),
         ],
       ),);
+    
+  Widget buil(BuildContext context) {
+    return Countdown(
+      seconds: 10,
+      build: (BuildContext context, double time) => Text(time.toString()),
+      interval: Duration(milliseconds: 100),
+      onFinished: () {
+        print('Timer is done!');
+        otp = '123';
+        session_timeout = true;
+        Navigator.of(context, rootNavigator: true).pop(); 
+      },
+    );
+  }
 
+  
 
 
 }
+
 
